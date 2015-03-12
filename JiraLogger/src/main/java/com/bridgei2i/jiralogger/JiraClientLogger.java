@@ -1,0 +1,79 @@
+package com.bridgei2i.jiralogger;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.atlassian.jira.rest.client.JiraRestClient;
+import com.atlassian.jira.rest.client.JiraRestClientFactory;
+import com.atlassian.jira.rest.client.domain.BasicIssue;
+import com.atlassian.jira.rest.client.domain.BasicProject;
+import com.atlassian.jira.rest.client.domain.Issue;
+import com.atlassian.jira.rest.client.domain.IssueLink;
+import com.atlassian.jira.rest.client.domain.SearchResult;
+import com.atlassian.jira.rest.client.domain.User;
+import com.atlassian.jira.rest.client.domain.Worklog;
+import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
+import com.atlassian.util.concurrent.Promise;
+
+public class JiraClientLogger {
+	
+	    public static void main(String[] args) throws Exception
+	    {
+
+	    	// Construct the JRJC client
+	        JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
+	        URI uri = new URI(PropertiesCache.getInstance().getProperty("JIRA_URL"));
+	        JiraRestClient jc = factory.createWithBasicHttpAuthentication(uri, PropertiesCache.getInstance().getProperty("JIRA_ADMIN_USERNAME"), PropertiesCache.getInstance().getProperty("JIRA_ADMIN_PASSWORD"));
+	        
+	       //Get issues for the Filter
+	        ArrayList<JiraProjectWorkLog> workList=new ArrayList<JiraProjectWorkLog>();
+	    	   SearchResult sc= jc.getSearchClient().searchJql(PropertiesCache.getInstance().getProperty("JIRA_JQL_FILTER")).claim();
+	    	   Iterator<BasicIssue> itr=sc.getIssues().iterator();
+		        while (itr.hasNext()) {
+		        	try{
+			        	JiraProjectWorkLog jiraLog=new JiraProjectWorkLog();
+			        	BasicIssue bi=itr.next();
+			        	Issue issue = jc.getIssueClient().getIssue(bi.getKey()).claim();
+			        	String userName=issue.getAssignee().getDisplayName();
+			        	String projectName=issue.getProject().getName();
+			        	jiraLog.setProjactName(projectName);
+			        	jiraLog.setUserName(userName);
+			        	jiraLog.setProjectWorkLog(issue.getWorklogs().iterator());
+			        	workList.add(jiraLog);
+		        	}catch(Exception e){}
+		        	
+		        }
+	        
+		        
+		        
+	       //Map to create datewise log data for the users
+	       //Here key is Date::Project::user and value is time logged on this date for this project
+	       Map<String,Integer> logMap=new HashMap<String,Integer>();
+	       for(int i=0;i<workList.size();i++){
+	    	   JiraProjectWorkLog jiraLog=workList.get(i);
+	    	   Iterator<Worklog> workLog=jiraLog.getProjectWorkLog();
+	    	   while(workLog.hasNext()){
+	    		   Worklog wl=workLog.next();
+	    		   String key=jiraLog.getUserName()+"::"+(wl.getStartDate().toString().substring(0,10))+"::"+jiraLog.getProjactName();
+	    		   if(!logMap.containsKey(key)){
+		        		logMap.put(key, wl.getMinutesSpent());
+		        	}else{
+		        		logMap.put(key, wl.getMinutesSpent()+((Integer)logMap.get(key)));
+		        	}
+	    	   }
+	       }
+	       
+	       	Boolean result=ApplicationUtil.generateCSV(logMap,PropertiesCache.getInstance().getProperty("FILEPATH"));
+	       	if(result){
+	       		System.out.println("File Exported Successfully, Location :"+PropertiesCache.getInstance().getProperty("FILEPATH"));
+	       	}else{
+	       		System.out.println("Unable to Export the File");
+	       	}
+	        System.out.println("Done!!. Now exiting.");
+	        System.exit(0);
+	    
+	    }
+}
