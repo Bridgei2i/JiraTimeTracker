@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+
 import com.atlassian.jira.rest.client.JiraRestClient;
 import com.atlassian.jira.rest.client.JiraRestClientFactory;
 import com.atlassian.jira.rest.client.domain.BasicIssue;
@@ -22,15 +26,45 @@ public class JiraClientLogger {
 	
 	    public static void main(String[] args) throws Exception
 	    {
+	    	
+	    	String FilePath;
+	    	String jiraUrl;
+	    	String jiraPassword;
+	    	String jireUsername;
+	    	String jiraQuery;
+	    	String outFilePath;
+	    	
+	    	//Parsing cmd line arguments
+	    	commandLineParser cmd=new commandLineParser(args);
+	    	
+	    	//Handling Cmd inputs from File
+	    	if(cmd.getMode()==1){
+	    		
+	    		//Getting Property values from file
+	    		PropertiesCache pc=new PropertiesCache(cmd.getFilePath());
+	    		jiraPassword=pc.getJiraPassword();
+	    		jiraQuery=pc.getJiraFilter();
+	    		jiraUrl=pc.getJiraUrl();
+	    		jireUsername=pc.getJiraUname();
+	    		outFilePath=pc.getOutFilePath();
+	    	}
+	    	else{ //Handling Cmd inputs From cmd line 
+	    		
+	    		jiraPassword=cmd.getJiraPassword();
+	    		jiraQuery=cmd.getJiraFilter();
+	    		jiraUrl=cmd.getJiraUrl();
+	    		jireUsername=cmd.getJiraUname();
+	    		outFilePath=cmd.getOutFilePath();
+	    	}
 
 	    	// Construct the JRJC client
 	        JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-	        URI uri = new URI(PropertiesCache.getInstance().getProperty("JIRA_URL"));
-	        JiraRestClient jc = factory.createWithBasicHttpAuthentication(uri, PropertiesCache.getInstance().getProperty("JIRA_ADMIN_USERNAME"), PropertiesCache.getInstance().getProperty("JIRA_ADMIN_PASSWORD"));
+	        URI uri = new URI(jiraUrl);
+	        JiraRestClient jc = factory.createWithBasicHttpAuthentication(uri, jireUsername, jiraPassword);
 	        
 	       //Get issues for the Filter
 	        ArrayList<JiraProjectWorkLog> workList=new ArrayList<JiraProjectWorkLog>();
-	    	   SearchResult sc= jc.getSearchClient().searchJql(PropertiesCache.getInstance().getProperty("JIRA_JQL_FILTER")).claim();
+	    	   SearchResult sc= jc.getSearchClient().searchJql(jiraQuery).claim();
 	    	   Iterator<BasicIssue> itr=sc.getIssues().iterator();
 		        while (itr.hasNext()) {
 		        	try{
@@ -66,9 +100,9 @@ public class JiraClientLogger {
 	    	   }
 	       }
 	       
-	       	Boolean result=ApplicationUtil.generateCSV(logMap,PropertiesCache.getInstance().getProperty("FILEPATH"));
+	       	Boolean result=ApplicationUtil.generateCSV(logMap,outFilePath);
 	       	if(result){
-	       		System.out.println("File Exported Successfully, Location :"+PropertiesCache.getInstance().getProperty("FILEPATH"));
+	       		System.out.println("File Exported Successfully, Location :"+outFilePath);
 	       	}else{
 	       		System.out.println("Unable to Export the File");
 	       	}
