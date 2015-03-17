@@ -20,7 +20,19 @@ Inputs
 Output
 ----------
     This application will create a file in <Filepath> location.
-	
+
+     Sample Output:
+     ---------------------	
+                   The output file will be exported in the following structure.
+
+                  User                       Date                            Project                     Hours Spent
+               -----------                 -------------                  ----------------               ----------------------
+             Sample User1                   2015-01-01                     Project 1                         8
+             Sample User1                   2015-01-02                     Project 1                         2
+             Sample User1                   2015-01-02                     Project 2                         3
+             Sample User1                   2015-01-03                     Project 1                         7
+             Sample User2                   2015-01-01                     Project 1                         4
+                      ...                        ...                             ...                         ...
 Usage
 ----------
     Inputs has to be send as a command line arguments. which you can send in 2 methods :
