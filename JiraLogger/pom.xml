@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bridgei2i</groupId>
-  <artifactId>gcal2jira</artifactId>
+  <artifactId>JiraTimeTracker</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>gcal2jira</name>
+  <name>JiraTimeTracker</name>
   <url>http://maven.apache.org</url>
   <repositories>
       <repository>
@@ -22,6 +22,7 @@
          </repository>
   </repositories>
   <build>
+  <pluginManagement>  
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -46,7 +47,45 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+    
+    <!-- Adding header to file -->
+		<plugin>
+		  <groupId>com.mycila.maven-license-plugin</groupId>
+		  <artifactId>maven-license-plugin</artifactId>
+		  <version>1.8.0</version>
+		  <configuration>
+		    <!-- Template location -->
+		    <header>src/main/resources/fileHeader.txt</header>
+		    <properties>
+		      <!-- Values to be substituted in template -->
+		      <h_inceptionYear>${inceptionYear}</h_inceptionYear>
+		      <h_currentYear>${currentYear}</h_currentYear>
+		      <h_copyrightOwner>${copyrightOwner}</h_copyrightOwner>
+		    </properties>
+		    <strictCheck>true</strictCheck>
+		    <excludes>
+		      <exclude>**/*.html</exclude>
+		      <exclude>**/*.xml</exclude>
+		      <exclude>**/*.txt</exclude>
+		      <exclude>**/*.ec</exclude>
+		      <exclude>**/*.log</exclude>
+		      <exclude>**/*.css</exclude>
+		      <exclude>**/*.js</exclude>
+		      <exclude>**/*.jsp</exclude>
+		      <exclude>**/*.md</exclude>
+		    </excludes>
+		  </configuration>
+		  <executions>
+		    <execution>
+		      <phase>validate</phase>
+		      <goals>
+		        <goal>format</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		</plugin>
+      </plugins>
+	</pluginManagement>
   </build>
   <dependencies>
     <dependency>

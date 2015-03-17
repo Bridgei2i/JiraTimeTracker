@@ -1,16 +1,21 @@
+/**
+ * Copyright (C) 2015 BRIDGEI2I Analytics Solutions - All rights reserved.
+ */
 package com.bridgei2i.jiralogger;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+/**
+ * @author      Saddam Hussain
+ * @version     0.1 
+ * @since       2015-03-01
+ * This class implements method to sort a map key, And has method to create a csv file. 
+ */
 public class ApplicationUtil {
 
 	//Sorting the map based on the key and return the sorted keys as list
