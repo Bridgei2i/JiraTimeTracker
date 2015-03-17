@@ -28,14 +28,14 @@ Usage
 	------
 		 Using Command line options you can send the inputs to the application.
 		 
-		-N,		= 	Jira User Name
-		-P,		=	Jira Password
-		-Q,		=	Jira JQL Query
-		-U,		=	Jira Host URL
-		-O,		=	Output File Path
+		-n,		= 	Jira User Name
+		-p,		=	Jira Password
+		-q,		=	Jira JQL Query
+		-u,		=	Jira Host URL
+		-o,		=	Output File Path
 
-		 Example: java -jar myJARFile.jar -U "http://sample.atlassian.net" -N "user@google.com" -P "abcdefghij"
-						-Q "project in ('project1','project2') AND created >= -30d  ORDER BY created DESC" -O "E:\\name.csv"
+		 Example: java -jar myJARFile.jar -u "http://sample.atlassian.net" -n "user@google.com" -p "abcdefghij"
+						-q "project in ('project1','project2') AND created >= -30d  ORDER BY created DESC" -o "E:\\name.csv"
 						
 	Method 2: (Sending inputs from property file)
 	-------------
@@ -48,6 +48,6 @@ Usage
 			FILEPATH=E:\\JiraLogs.csv																	//Output File Path
 			JQL_QUERY = project in ('project1','project2') AND created >= -30d  ORDER BY created DESC   //Jira JQL Query
 
-		Now you have to send the flat file to the application by using -F option.
+		Now you have to send the flat file to the application by using -f option.
 		
-		 Example: java -jar myJARFile.jar -F "E:\\properties.txt"
+		 Example: java -jar myJARFile.jar -f "E:\\properties.txt"
