@@ -46,7 +46,7 @@ Usage
 			PASSWORD = abcdefghij																		//Jira Password
 			URL = http://sample.atlassian.net															//Jira Host URL
 			FILEPATH=E:\\JiraLogs.csv																	//Output File Path
-			JQL_QUERY = project in ('project1','project2') AND created >= -30d  ORDER BY created DESC   //Jira JQL Query
+			QUERY = project in ('project1','project2') AND created >= -30d  ORDER BY created DESC   //Jira JQL Query
 
 		Now you have to send the flat file to the application by using -f option.
 		
