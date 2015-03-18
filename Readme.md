@@ -1,12 +1,15 @@
 Jira Time Tracker
 ===================
 
-	A Jira Rest Client to fetch log deatils from Jira and create a CSV file.
+	A command line tool that fetches time logged against all JIRA tickets and dumps the output into a CSV file.
 	
 	
 Description
 ------------
-    A Jira rest client implemented in java to fetch work log details from Jira based on the JQL Query passed as a parameter which will create a CSV file with log details.
+	
+	Let's say one of your teams is logging time against JIRA tasks. If there are other teams logging time in different tools, and you to display the time details from all teams. 
+	This tool will extract the time logged against all JIRA tasks from a given set of projects and dump the output as a CSV. The data is in the form of a 4-tuple, {username, date, project, hours}
+    
 
 Inputs
 ------------
