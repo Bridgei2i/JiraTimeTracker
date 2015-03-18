@@ -1,14 +1,17 @@
 Jira Time Tracker
 ===================
 
-	A command line tool that fetches time logged against all JIRA tickets and dumps the output into a CSV file.
+	A command line tool that fetches time logged against all JIRA tickets and dumps the 
+	output into a CSV file.
 	
 	
 Description
 ------------
 	
-	Let's say one of your teams is logging time against JIRA tasks. If there are other teams logging time in different tools, and you to display the time details from all teams. 
-	This tool will extract the time logged against all JIRA tasks from a given set of projects and dump the output as a CSV. The data is in the form of a 4-tuple, {username, date, project, hours}
+	Let's say one of your teams is logging time against JIRA tasks, and other teams are logging 
+	time in other tools, and you wish to display the time details from all teams. 
+	This tool will extract the time logged against all JIRA tasks from a given set of projects 
+	and dump the output as a CSV. The data is in the form of a 4-tuple, {username, date, project, hours}
     
 
 Inputs
@@ -66,3 +69,11 @@ Usage
 		Now you have to send the flat file to the application by using -f option.
 		
 		 Example: java -jar myJARFile.jar -f "E:\\properties.txt"
+		 
+
+License
+---------------------
+
+Copyright © 2015 Bridgei2i Analytics Pvt Ltd.
+
+Released under the Eclipse license.
