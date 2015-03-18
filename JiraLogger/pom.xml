@@ -7,6 +7,10 @@
   <version>1.0-SNAPSHOT</version>
   <name>JiraTimeTracker</name>
   <url>http://maven.apache.org</url>
+  <properties>
+  <currentYear>2015</currentYear>
+  <copyrightOwner>Bridgei2i Analytics Pvt Ltd</copyrightOwner>
+  </properties>
   <repositories>
       <repository>
           <id>atlassian.com</id>
@@ -47,7 +51,28 @@
           </execution>
         </executions>
       </plugin>
-    
+    <!-- Creating current year element -->
+		<plugin>
+		  <groupId>org.codehaus.groovy.maven</groupId>
+		  <artifactId>gmaven-plugin</artifactId>
+		  <version>1.0</version>
+		  <executions>
+		    <execution>
+		      <phase>validate</phase>
+		      <goals>
+		        <goal>execute</goal>
+		      </goals>
+		      <configuration>
+		        <source>
+		          import java.util.Date
+		          import java.text.MessageFormat
+		          def vartimestamp = MessageFormat.format("{0,date,yyyy}", new Date())
+		          project.properties['currentYear'] = vartimestamp
+		        </source>
+		      </configuration>
+		    </execution>
+		  </executions>
+		</plugin>
     <!-- Adding header to file -->
 		<plugin>
 		  <groupId>com.mycila.maven-license-plugin</groupId>
@@ -58,7 +83,6 @@
 		    <header>src/main/resources/fileHeader.txt</header>
 		    <properties>
 		      <!-- Values to be substituted in template -->
-		      <h_inceptionYear>${inceptionYear}</h_inceptionYear>
 		      <h_currentYear>${currentYear}</h_currentYear>
 		      <h_copyrightOwner>${copyrightOwner}</h_copyrightOwner>
 		    </properties>

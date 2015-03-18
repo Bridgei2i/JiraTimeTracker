@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 BRIDGEI2I Analytics Solutions - All rights reserved.
+ * Copyright © 2015 Bridgei2i Analytics Pvt Ltd - All rights reserved.
  */
 package com.bridgei2i.jiralogger;
 
